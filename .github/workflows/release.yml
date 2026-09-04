@@ -21,7 +21,9 @@ jobs:
 
     steps:
     - name: checkout repository
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
+      with:
+        token: ${{ secrets.PAT }}
 
     # because releases are orphan commits (no history) relase-plase needs a
     # base commit to create the diff from. Because of that the release contains
@@ -85,18 +87,21 @@ jobs:
       shell: bash
       run: task release
 
-    - name: update release (use orpahn commit)
+    - name: update release (use orphan commit)
       if: ${{ steps.rpa.outputs.release_created }}
       shell: bash
       env:
-        GH_TOKEN: ${{ github.token }}
+        GH_TOKEN: ${{ secrets.PAT }}
       run: |
         COMMIT_MAIN=$(git rev-parse HEAD)
         echo "::debug::COMMIT_MAIN> ${COMMIT_MAIN}"
 
+        echo "::debug::clearing staged changes from build step"
+        git reset HEAD
+
         echo "::debug::creating orphan branch"
         git checkout --orphan release
-        git rm --cached -r .
+        git rm --cached -rf .
         git add --force dist/ README.md LICENSE action.yml
 
         echo "::debug::configuring github user"

@@ -1,6 +1,6 @@
 {
   "name": "action-conventional-commits",
-  "version": "1.1.26",
+  "version": "1.2.4",
   "private": true,
   "description": "Check if your PR commits matching with conventionalcommits",
   "main": "lib/main.js",
@@ -9,7 +9,7 @@
     "format": "prettier --write '**/*.ts'",
     "format-check": "prettier --check '**/*.ts'",
     "lint": "eslint src/**/*.ts",
-    "package": "ncc build --source-map --license licenses.txt",
+    "package": "esbuild src/main.ts --bundle --platform=node --outfile=dist/index.js --sourcemap --minify",
     "test": "jest",
     "all": "npm run build && npm run format && npm run lint && npm run package && npm test",
     "prepare": "husky install"
@@ -29,29 +29,34 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^2.0.2",
-    "@actions/github": "^7.0.0",
+    "@actions/core": "^3.0.1",
+    "@actions/github": "^9.1.1",
     "@types/lodash.escaperegexp": "^4.1.9",
-    "eslint-plugin-prettier": "^5.5.5",
+    "eslint-plugin-prettier": "^5.5.6",
     "lodash.escaperegexp": "^4.1.2",
-    "prettier": "^3.8.1"
+    "prettier": "^3.9.6"
   },
   "devDependencies": {
-    "@types/lodash": "^4.17.23",
-    "@types/node": "^25.2.3",
+    "@eslint/js": "^10.0.1",
+    "@types/lodash": "^4.17.25",
+    "@types/node": "^26.2.0",
     "@typescript-eslint/eslint-plugin": "^8.57.0",
     "@typescript-eslint/parser": "^8.55.0",
-    "@vercel/ncc": "^0.38.3",
-    "eslint": "^9.39.2",
-    "eslint-plugin-github": "^6.0.0",
-    "eslint-plugin-jest": "^29.15.0",
+    "esbuild": "^0.28.2",
+    "eslint": "^10.8.1",
+    "eslint-plugin-github": "^6.1.2",
+    "eslint-plugin-jest": "^29.16.1",
     "husky": "^9.1.7",
-    "jest": "^30.2.0",
-    "js-yaml": "^4.1.1",
-    "ts-jest": "^29.4.6",
+    "jest": "^30.4.2",
+    "js-yaml": "^5.3.0",
+    "ts-jest": "^29.4.12",
     "typescript": "^5.9.3"
   },
   "overrides": {
-    "glob": "10.5.0"
+    "glob": "10.5.0",
+    "@babel/core": ">=7.29.6",
+    "@istanbuljs/load-nyc-config": {
+      "js-yaml": ">=3.15.1 <4"
+    }
   }
 }
